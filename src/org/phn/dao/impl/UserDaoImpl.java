@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.phn.bean.User;
 import org.phn.dao.IUserDao;
@@ -15,76 +14,21 @@ import org.phn.util.DBUtil;
  * @date 2015-4-8
  * @TODO
  */
-public class UserDaoImpl implements IUserDao {
+public class UserDaoImpl extends JDBCDaoSupport implements IUserDao {
 
 	public int save(User user) {
 		String insertSql = "insert into t_user(uname,upass) values(?,?)";
-		Connection conn = DBUtil.getConnection();
-		int insertedUserId = 0;
-		PreparedStatement pstm = null;
-		ResultSet rs = null;
-		try {
-			pstm = conn.prepareStatement(insertSql,
-					Statement.RETURN_GENERATED_KEYS);
-			// 注意参数从1开始
-			pstm.setString(1, user.getUname());
-			pstm.setString(2, user.getUpass());
-			pstm.executeUpdate();
-			rs = pstm.getGeneratedKeys();
-			while (rs.next()) {
-				insertedUserId = rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			// e.printStackTrace();
-			System.out.println("**Error**:caused at " + this.getClass() + "."
-					+ new Throwable().getStackTrace()[0].getMethodName()
-					+ "()::" + e.getMessage());
-		} finally {
-			DBUtil.closeConnection(conn, pstm, rs);
-		}
-		return insertedUserId;
+		return super.executeInsert(insertSql, user.getUname(),user.getUpass());
 	}
 
 	public int update(User user) {
 		String updateSql = "update t_user set uname=?,upass=? where id=?";
-		Connection conn = DBUtil.getConnection();
-		PreparedStatement pstm = null;
-		int updateResult = 0;
-		try {
-			pstm = conn.prepareStatement(updateSql);
-			pstm.setString(1, user.getUname());
-			pstm.setString(2, user.getUpass());
-			pstm.setInt(3, user.getId());
-			updateResult = pstm.executeUpdate();
-		} catch (SQLException e) {
-			// e.printStackTrace();
-			System.out.println("**Error**:caused at " + this.getClass() + "."
-					+ new Throwable().getStackTrace()[0].getMethodName()
-					+ "()::" + e.getMessage());
-		}finally{
-			DBUtil.closeConnection(conn, pstm, null);
-		}
-		return updateResult;
+		return super.executeUpdateAndDelete(updateSql, user.getUname(),user.getUpass(),user.getId());
 	}
 
 	public int delete(int userId) {
 		String deleteSql = "delete from t_user where id=?";
-		Connection conn = DBUtil.getConnection();
-		PreparedStatement pstm = null;
-		int deleteResult = 0;
-		try {
-			pstm = conn.prepareStatement(deleteSql);
-			pstm.setInt(1, userId);
-			deleteResult = pstm.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("**Error**:caused at " + this.getClass() + "."
-					+ new Throwable().getStackTrace()[0].getMethodName()
-					+ "()::" + e.getMessage());
-		}finally{
-			DBUtil.closeConnection(conn, pstm, null);
-		}
-		return deleteResult;
+		return super.executeUpdateAndDelete(deleteSql,userId);
 	}
 
 	public User get(int userId) {

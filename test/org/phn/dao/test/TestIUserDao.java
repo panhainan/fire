@@ -14,7 +14,7 @@ public class TestIUserDao {
 
 	IUserDao userDao = new UserDaoImpl();
 
-	 @Test
+//	 @Test
 	public void testSave() {
 		User user = new User();
 		user.setUname("潘海南" + (int) (Math.random() * 100));
@@ -26,10 +26,10 @@ public class TestIUserDao {
 				+ new Throwable().getStackTrace()[0].getMethodName()+" Result : "+uid);
 	}
 
-	@Test
+//	@Test
 	public void testUpdate() {
 		User user = new User();
-		user.setId(13);
+		user.setId(3);
 		user.setUname("phn" + (int) (Math.random() * 100));
 		user.setUpass("321" + (int) (Math.random() * 100));
 		System.out.println(user.toString());
@@ -38,13 +38,13 @@ public class TestIUserDao {
 				+ new Throwable().getStackTrace()[0].getMethodName()+" Result : "+result);
 	}
 
-	@Test
+		@Test
 	public void testDelete() {
-		int result = userDao.delete(12);
+		int result = userDao.delete(2);
 		System.out.println("Test "+this.getClass() + "."
 				+ new Throwable().getStackTrace()[0].getMethodName()+" Result : "+result);
 	}
-	@Test
+	//	@Test
 	public void testGet() {
 		User user = userDao.get(16);
 		if(user!=null){
