@@ -1,5 +1,7 @@
 package org.phn.dao;
 
+import java.util.List;
+
 import org.phn.bean.User;
 
 
@@ -16,5 +18,12 @@ public interface IUserDao {
 	int delete(int userId);
 	
 	User get(int userId);
+
+	/**
+	 * @date 2015-4-9
+	 * @TODO 
+	 * @return
+	 */
+	List<User> list();
 	
 }

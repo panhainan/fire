@@ -1,20 +1,16 @@
 package org.phn.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
 import org.phn.bean.User;
 import org.phn.dao.IUserDao;
-import org.phn.util.DBUtil;
 
 /**
  * @author phn
  * @date 2015-4-8
  * @TODO
  */
-public class UserDaoImpl extends JDBCDaoSupport implements IUserDao {
+public class UserDaoImpl extends JDBCDaoSupport<User> implements IUserDao {
 
 	public int save(User user) {
 		String insertSql = "insert into t_user(uname,upass) values(?,?)";
@@ -33,28 +29,11 @@ public class UserDaoImpl extends JDBCDaoSupport implements IUserDao {
 
 	public User get(int userId) {
 		String getSql = "select * from t_user where id=?";
-		Connection conn = DBUtil.getConnection();
-		PreparedStatement pstm = null;
-		User user = null;
-		ResultSet rs = null;
-		try {
-			pstm = conn.prepareStatement(getSql);
-			pstm.setInt(1, userId);
-			rs = pstm.executeQuery();
-			while(rs.next()){
-				user = new User();
-				user.setId(rs.getInt("id"));
-				user.setUname(rs.getString("uname"));
-				user.setUpass(rs.getString("upass"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("**Error**:caused at " + this.getClass() + "."
-					+ new Throwable().getStackTrace()[0].getMethodName()
-					+ "()::" + e.getMessage());
-		}finally{
-			DBUtil.closeConnection(conn, pstm, null);
-		}
-		return user;
+		return super.executeGet(getSql, userId, User.class);
+	}
+	
+	public List<User> list(){
+		String getSql = "select * from t_user";
+		return super.executeList(getSql,User.class);
 	}
 }
