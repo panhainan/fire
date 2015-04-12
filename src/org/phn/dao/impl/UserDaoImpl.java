@@ -32,8 +32,14 @@ public class UserDaoImpl extends JDBCDaoSupport<User> implements IUserDao {
 		return super.executeGet(getSql, userId, User.class);
 	}
 	
-	public List<User> list(){
-		String getSql = "select * from t_user";
-		return super.executeList(getSql,User.class);
+	public List<User> list(int pageSize,int startRecord){
+		String listSql = "select * from t_user limit ?,?";
+		return super.executeList(listSql,User.class,startRecord,pageSize);
 	}
+
+	public int countRow() {
+		String getCountSql = "select count(*) from t_user";
+		return super.getCountRow(getCountSql);
+	}
+	
 }

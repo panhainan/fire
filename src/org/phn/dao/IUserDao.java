@@ -4,26 +4,21 @@ import java.util.List;
 
 import org.phn.bean.User;
 
-
 /**
  * @author phn
  * @date 2015-4-8
- * @TODO 
+ * @TODO
  */
 public interface IUserDao {
 	int save(User user);
-	
+
 	int update(User user);
-	
+
 	int delete(int userId);
-	
+
 	User get(int userId);
 
-	/**
-	 * @date 2015-4-9
-	 * @TODO 
-	 * @return
-	 */
-	List<User> list();
-	
+	List<User> list(int pageSize, int startRecord);
+
+	int countRow();
 }

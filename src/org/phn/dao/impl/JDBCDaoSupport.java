@@ -147,6 +147,31 @@ public class JDBCDaoSupport<T> {
 	}
 
 	/**
+	 * @date 2015-4-11
+	 * @TODO 获取总数
+	 * @param sql
+	 * @param params
+	 * @return
+	 */
+	public int getCountRow(String sql,Object...params){
+		Connection conn = DBUtil.getConnection();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		int countRow=0;
+		try {
+			pstm = conn.prepareStatement(sql);
+			setParams(pstm, params);
+			rs = pstm.executeQuery();
+			if(rs.next()){
+				countRow = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return countRow;
+	}
+	/**
 	 * @date 2015-4-10
 	 * @TODO 将数据库中查询出来的结果集ResultSet转化为实体
 	 * @param c
@@ -190,7 +215,6 @@ public class JDBCDaoSupport<T> {
 				} else if ("java.math.BigDecimal".equals(columClassName[i])) {
 					md.invoke(o, rs.getBigDecimal(sb.toString()));
 				}
-
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

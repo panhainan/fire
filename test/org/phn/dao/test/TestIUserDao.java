@@ -50,7 +50,7 @@ public class TestIUserDao {
 				+ " Result : " + result);
 	}
 
-	@Test
+//	@Test
 	public void testGet() {
 		User user = userDao.get(3);
 		if (user != null) {
@@ -65,7 +65,7 @@ public class TestIUserDao {
 
 	@Test
 	public void testList() {
-		List<User> list = userDao.list();
+		List<User> list = userDao.list(2,1);
 		if (list != null) {
 			System.out.println("Test " + this.getClass() + "."
 					+ new Throwable().getStackTrace()[0].getMethodName()
@@ -77,5 +77,10 @@ public class TestIUserDao {
 			System.out.println("**Error**:查找失败！");
 		}
 
+	}
+	@Test
+	public void testCount(){
+		long count = userDao.countRow();
+		System.out.println(count);
 	}
 }
